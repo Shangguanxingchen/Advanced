@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box {
+      width: 300px;
+      height: 300px;
+      background: red;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    函数防抖[debounce]
+      - 希望函数只执行一次，哪怕我进行了多次调用    
+-->
+  <div id="box"></div>
+  <script>
+    /*
+      调用 debounce 方法，要返回一个经过防抖处理的函数
+        返回的经过防抖处理的函数 功能 要 fn 功能一样
+    */
+    /*
+      fn： 要处理防抖的函数
+      delay： 防抖时间
+      isStart: 是否头部执行
+    */
+    function debounce(fn, delay = 200, isStart = false) {
+      let timer = 0;
+      let isFirst = true; // 是否是第一次调用
+      return function (...args) {
+        clearTimeout(timer);
+        if (isStart & isFirst) {
+          fn.apply(this,args);
+          isFirst = false;
+        }
+        timer = setTimeout(() => {
+          if (isStart) {
+            isFirst = true;
+          } else {
+            fn.apply(this,args);
+          }
+        }, delay);
+      }
+    }
+    {
+      let box = document.querySelector("#box");
+      let timer = 0;
+      let index = 0;
+
+      // 只执行最后一次
+      // console.time(index);
+      // box.onmousemove = function(){
+      //   clearTimeout(timer);
+      //   timer = setTimeout(() => {
+      //     console.timeEnd(index);
+      //     index++;
+      //     console.time(index);  
+      //   }, 200);
+      // };
+      // 只执行第一次
+      let isStart = true;
+      console.time(index);
+      box.onmousemove = debounce(function(e) {
+        console.log(e,this);
+      },200,true);
+  }
+  </script>
+</body>
+
+</html>

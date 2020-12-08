@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>月牙</title>
+    <style>
+        html{height: 100%;overflow: hidden}
+        body{height: 100%;margin: 0;}
+        #canvas{
+            background: antiquewhite;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+    const canvas=document.getElementById('canvas');
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+
+    const  ctx=canvas.getContext('2d');
+
+    //线性渐变
+    const linerGradient = ctx.createLinearGradient(200, 200, 200, 300);
+    linerGradient.addColorStop(0, '#000000');
+    linerGradient.addColorStop(1, '#2196F3');
+    ctx.fillStyle = linerGradient;
+
+    //圆
+    ctx.beginPath();
+    ctx.arc(300, 300, 100, 0, Math.PI * 2);
+    // ctx.fillStyle = '#2196F3';
+    ctx.fill();
+
+    //设置全局合成属性
+    ctx.globalCompositeOperation='destination-out';
+
+    //偏移圆
+    ctx.beginPath();
+    ctx.arc(350,300,100,0,Math.PI*2);
+    // ctx.fillStyle='#2196F3';
+    ctx.fill();
+
+</script>
+</body>
+</html>

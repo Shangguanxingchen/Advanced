@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Document</title>
+  <style>
+    #box {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 200px;
+      height: 200px;
+      background: red;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <a id="a" href="https://www.baidu.com">百度</a>
+  <div id="box"></div>
+<script>
+{
+  let box = document.querySelector("#box");
+  /*
+      事件点透：
+        在移动端也支持鼠标事件，但是，鼠标事件执行会有一定延迟(300ms以内)
+
+        在移动端，当我们触碰元素时，会立即执行touch事件，并记录触碰坐标，一定时间延迟之后，会在该坐标查找元素，如果元素有鼠标事件就执行。
+
+      解决办法：
+        1. 绝对不在移动端使用 mouse 事件 
+        2. 给 touch 也加延迟
+        3. 阻止默认事件
+  */
+  box.addEventListener("touchend",(e)=>{
+    // setTimeout(() => {
+    //   box.style.display = "none";
+    // }, 300);
+    box.style.display = "none";
+    e.preventDefault();
+  });
+}  
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box {
+      width: 300px;
+      height: 300px;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+<!--
+    函数防抖[debounce]
+      - 希望函数只执行一次，哪怕我进行了多次调用    
+    函数节流[throttle]
+      让函数保持在一个可接受的固定频率执行
+-->
+<div id="box"></div>
+<script>
+function bind(fn,This) {
+  return function(...args) {
+    fn.apply(This,args);
+  }
+}  
+{
+  let box = document.querySelector("#box");
+  let timer = 0;
+  let index = 0;
+  function fn() {
+    console.log(this);
+  }
+  fn = bind(fn,box);
+  setTimeout(() => {
+    fn()
+  }, 2000);
+  document.onclick = fn;
+
+  // 尾部执行：延迟时间之后执行第一次
+  // console.time(index);
+  // box.onmousemove = function(){
+  //   if(timer){
+  //      return ; 
+  //   }
+  //   timer = setTimeout(() => {
+  //     console.timeEnd(index);
+  //     index++;
+  //     console.time(index);
+  //     timer = 0;  
+  //   }, 500);
+  // };
+  //头部执行：第一次立即执行，不要延迟
+  console.time(index);
+  let isStart = true;
+  box.onmousemove = function(){
+    if(timer){
+       return ; 
+    }
+    if(isStart){ // 头部执行
+      console.timeEnd(index);
+      index++;
+      console.time(index);
+    }
+    timer = setTimeout(() => {
+      timer = 0;  
+    }, 500);
+  };
+  
+}
+</script>
+</body>
+</html>

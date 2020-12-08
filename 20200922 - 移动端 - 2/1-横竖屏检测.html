@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #mask {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, .7);
+      display: flex;
+    }
+    #mask span {
+      margin: auto;
+      font-size: 40px;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+<div id="mask"><span>请在竖屏下浏览本应用</span></div>  
+<script>
+  //alert(window.orientation);  
+  /*
+    window.orientation:
+      0  180  竖屏
+      90 -90  横屏
+    orientationchange 监听手机横竖发生变化  
+  */
+{
+  let mask = document.querySelector("#mask");
+  let getOrientation = ()=>{
+    switch (window.orientation) {
+      case 90:
+      case -90:  
+        mask.style.display = "flex";
+        break;
+      default:
+        mask.style.display = "none";
+    }
+  };
+  getOrientation();
+  window.addEventListener("orientationchange",getOrientation)
+} 
+</script>  
+</body>
+</html>

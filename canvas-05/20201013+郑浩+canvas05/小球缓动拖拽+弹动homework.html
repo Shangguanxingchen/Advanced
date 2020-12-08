@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小球拖抓+弹动</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden
+        }
+        #canvas {
+            background: antiquewhite;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+<script>
+    const canvas = document.getElementById('canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+
+    class Ball {
+        constructor(r=0,color="#000") {
+            this.r = r;
+            this.color = color;
+            this.x = 0;
+            this.y = 0;
+            //缓动
+            this.nx = 0;
+            this.ny = 0;
+            this.rate = 0.01;
+            this.state = 0;
+        }
+
+        updatePos() {
+            const { x, y, nx, ny, rate, state } = this;
+            if (!this.state) { return }
+            this.x += (nx - x) * rate;
+            this.y += (ny - y) * rate;
+            const dx = nx - this.x;
+            const dy = ny - this.y;
+            const len = Math.sqrt(dx * dx + dy * dy);
+            if (len < 1) {
+                this.state = 0;
+            }
+        }
+
+        draw(ctx) {
+            const {x, y, r, color} = this;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI*2);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.restore;
+        }
+    };
+    //时间 重力 弹力 速度/毫秒
+    let time = null;
+    let gravity = 0;
+    let bounce = -0.8;
+    let vy = 0;
+    //小球实例
+    const ball = new Ball(30, 'red');
+    ball.x = canvas.width/2;
+    const bottom = canvas.height - ball.r;
+    ball.y = bottom;
+    //鼠标位减图形位 是否在图形中
+    let subPos = null;
+    let drag = false;
+    //点击事件
+    canvas.addEventListener('mousedown', mousedownFn);
+    canvas.addEventListener('mousemove', mousemoveFn);
+    canvas.addEventListener('mouseup', mouseupFn);
+    function mousedownFn(e) {
+        //鼠标位置
+        const mousePos = getMousePos(e);
+        //鼠标位减图形位
+        subPos = {
+            x: mousePos.x - ball.x,
+            y: mousePos.y - ball.y
+        }
+        //判断鼠标是否在图形中
+        drag = containPoint(ball, mousePos);
+        if(drag) {
+            ball.state = 1;
+            ball.nx = mousePos.x - subPos.x;
+            ball.ny = mousePos.y - subPos.y;
+        }
+    }
+    function mousemoveFn(e) {
+        const mousePos = getMousePos(e);
+        if(drag) {
+            ball.x = mousePos.x - subPos.x;
+            ball.y = mousePos.y - subPos.y;
+        }
+    }
+    function mouseupFn(e) {
+        if(drag) {
+            drag = false;
+            gravity = 0.01;
+            time = new Date();
+        }
+    }
+    //获取鼠标在canvas中的位置
+    function getMousePos(e) {
+        const {clientX, clientY} = e;
+        const {top, left} = canvas.getBoundingClientRect();
+        const x = clientX - left;
+        const y = clientY - top;
+        return {x, y};
+    }
+    //判断点是否在圆形中
+    function containPoint(obj,pos) {
+        const len = Math.sqrt(subPos.x*subPos.x+subPos.y*subPos.y);
+        return len < obj.r;
+    }
+    //动画
+    function animate() {
+        let now = new Date();
+        let diff = now - time;
+        time = now;
+        vy += gravity;
+        ball.y += vy*diff;
+        //底部碰撞检测
+        if(ball.y >= bottom) {
+            ball.y = bottom;
+            vy *= bounce;
+        }
+    }
+
+    !(function render(){
+        !drag && animate();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ball.draw(ctx);
+        requestAnimationFrame(render);
+    })();
+</script>
+</body>
+</html>

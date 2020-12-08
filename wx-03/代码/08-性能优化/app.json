@@ -1,0 +1,27 @@
+{
+  "pages":[
+    "pages/03-tx/03-tx",
+    "pages/01-packageA/01-packageA",
+    "pages/01-packageB/01-packageB",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "subPackages": [
+    {
+      "root": "packageA",
+      "pages": ["pages/apple/apple"]
+    },
+    {
+      "root": "packageB",
+      "pages": ["pages/banana/banana"]
+    }
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarTextStyle":"black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+    #list {
+      margin: 0;
+      padding: 0;
+    }
+    #list li {
+      font: 14px/30px "宋体";
+      padding:0 20px;
+      border-bottom: 1px dotted #000;
+    }
+  </style>
+</head>
+
+<body>
+<div id="wrap">
+  <ul id="list"></ul>
+</div>
+<script> 
+{
+  let list = document.querySelector("#list");
+  list.innerHTML = [...(".".repeat(100))].map((item,index)=>`<li>这是第${index}个li</li>`).join("");
+}  
+{
+  let wrap = document.querySelector("#wrap");
+  let off = false;
+  // 如果已经触发了滚动条滚动，则不能再阻止掉滚动
+  wrap.addEventListener("touchstart",(e)=>{
+    setTimeout(() => {
+      off = true;
+    }, 500);
+  });
+  wrap.addEventListener("touchmove",(e)=>{
+    if(off){
+      e.preventDefault();
+    }
+  })
+}
+</script>
+</body>
+</html>

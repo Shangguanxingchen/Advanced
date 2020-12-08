@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #div {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      margin: -25px 0 0 -25px;
+      width: 50px;
+      height: 50px;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+<div id="div"></div>  
+<script>
+ function getIos(){
+    var u = window.navigator.userAgent;
+    return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+}  
+{
+  /*
+    devicemotion 手机加速度检测
+    event.acceleration 手机加速对象
+    event.accelerationIncludingGravity 重力加速度对象 (加速度 + 重力)
+  */
+  /*
+    1. IOS 下要使用 devicemotion 相关API，必须是在 https 协议下。
+
+    2. 注意 安卓下 和 IOS 下 devicemotion 相关数值的取值问题：
+      在 IOS 下和安卓下 数值取值刚好相反，如 IOS 下 x 为 10 则 安卓下 为 -10
+      加速度(手机发生移动)
+      重力加速度(地心引力)
+    
+    3. 注意 IOS 12.2 的加速度检测授权问题
+        在 IOS 12.2 之后，IOS 做了一个限制，用户可以在设置手动关闭，动作与方向的访问权限，关闭之后则 devicemotion 相关内容无法在使用 
+
+  */
+  let div = document.querySelector("#div");
+  let translateX = 0;
+  let timer = 0;
+  timer = setTimeout(() => {
+      alert("请开启动作与访问权限，否则将无法使用该应用");
+  }, 100);
+  window.addEventListener("devicemotion",()=>{
+    clearTimeout(timer);
+  },{once:true})
+  window.addEventListener("devicemotion",(e)=>{
+    let {x} = e.accelerationIncludingGravity;
+    let {x:x2} = e.acceleration;
+    x -= x2;
+    if(!getIos()){ // 安卓下数值取反
+      x = -x;
+    }
+    translateX += x;
+    div.style.transform  = "translateX(" + translateX + "px)";
+  })
+} 
+</script>  
+</body>
+</html>

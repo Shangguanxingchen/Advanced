@@ -1,0 +1,16 @@
+<!--pages/05-event/04-event.wxml-->
+<text>pages/05-event/04-event.wxml</text>
+<view class="wrapper" bindtap="onTabWrapper">
+  <view class="rect" bind:tap="onTabRect">事件捕捉</view>
+</view>
+<view class="wrapper" capture-bind:tap="onTabWrapper">
+  <view class="rect" bindtap="onTabRect">事件冒泡</view>
+</view>
+<text>
+  1
+  <text style="font-size:16px">2</text>
+  <text>414*3/750</text>
+</text>
+<view class='list'>
+
+</view>

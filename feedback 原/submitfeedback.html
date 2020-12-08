@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>选择页</title>
+
+    <link href="../bs/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/feedback.css">
+  </head>
+  <body>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+              <img alt="BESTSELLER" src="./static/img/bestseller.png">
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container">
+        <div>
+          <div id="back" class="col-lg-2 col-sm-2 col-xs-2 pb-10"></div>
+          <h3>问题反馈</h3>
+        </div>
+        
+        <form id="feedbackForm">
+          <div class="row">
+            <div class="col-sm-6 col-xs-12 mb-10">
+              <span class="w20 dis_b opt">反馈标题：</span><input type="text" id="feedbackTitle">
+            </div>
+            <!-- <div class="col-sm-6 col-xs-12 mb-10">
+              <span class="w20 dis_b opt">店铺代码：</span><input type="text" id="ShopCode">
+            </div> -->
+          </div>
+          <div id="customize" class="row"></div>
+          
+          <div class="mb-10 showimgwp" id="addimgs">
+            <div class="opt">添加图片</div>
+            <ul>
+              <li class="upload-li"><span uid="1" class="title"></span><label for=""><input accept="image/*"  type="file" class="uploadIMG"></label></li>
+              <li class="upload-li"><span uid="2" class="title"></span><label for=""><input accept="image/*"  type="file" class="uploadIMG"></label></li>
+              <li class="upload-li"><span uid="3" class="title"></span><label for=""><input accept="image/*"  type="file" class="uploadIMG"></label></li>
+              <li class="upload-li"><span uid="4" class="title"></span><label for=""><input accept="image/*"  type="file" class="uploadIMG"></label></li>
+              <li class="upload-li"><span uid="5" class="title"></span><label for=""><input accept="image/*"  type="file" class="uploadIMG"></label></li>
+              <li class="upload-li"><span uid="6" class="title"></span><label for=""><input accept="image/*"  type="file" class="uploadIMG"></label></li>
+              <li class="upload-li"><span uid="7" class="title"></span><label for=""><input accept="image/*"  type="file" class="uploadIMG"></label></li>
+              <li class="upload-li"><span uid="8" class="title"></span><label for=""><input accept="image/*"  type="file" class="uploadIMG"></label></li>
+              <li class="upload-li"><span uid="9" class="title"></span><label for=""><input accept="image/*"  type="file" class="uploadIMG"></label></li>
+            </ul>
+            
+            <div>
+              <div class="opt" id="description-wp"></div>
+              <textarea style="width:100%" id="description"></textarea>  
+            </div>
+            <button class="btn btn-primary" id="submitBtn" type="button">提交</button>
+          </div>
+        </form>  
+      </div>
+
+      <!-- loading -->
+      <div class="masker-wp">
+        <div class="masker"></div>
+        <div class="loading">
+          努力加载中……
+        </div>
+      </div>
+      <!-- loading -->
+
+    <script src="../bs/js/jquery.min.js"></script>
+    <script src="../bs/js/bootstrap.min.js"></script>
+    <script src="../bs/js/layer/layer.js"></script>
+    <script src="../bs/js/base64.js"></script>
+    <script src="../bs/js/helper.js"></script>
+    <script src="../dist/js/submitfeedback.js"></script>
+  </body>
+</html>

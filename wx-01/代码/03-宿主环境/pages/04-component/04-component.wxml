@@ -1,0 +1,3 @@
+<!--pages/04-component/04-component.wxml-->
+<text>pages/04-component/04-component.wxml</text>
+<floatball text="开课吧" bind:tapBall="tapBall"></floatball>

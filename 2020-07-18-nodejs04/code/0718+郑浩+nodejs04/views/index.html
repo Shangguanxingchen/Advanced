@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>文件上传</title>
+    </head>
+
+    <body>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="">姓名：<input name="uname" type="text"></label>
+            </div>
+            <div>
+                <label for="">岁数：<input name="age" type="text"></label>
+            </div>
+            <div>
+                <label for="">照片：<input name="img" type="file"></label>
+            </div>
+            <div>
+                <input type="submit" value="提交">
+            </div>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,6 @@
+<!--pages/03-wxss/03-wxss.wxml-->
+<text>pages/03-wxss/03-wxss.wxml</text>
+<view class="container">
+  <text class="text bold" style="color:#00acec">1024</text>
+</view>
+<view class="rect"></view>

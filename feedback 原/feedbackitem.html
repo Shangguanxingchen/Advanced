@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+
+    <link href="../bs/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bs/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/feedback.css">
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            <img alt="BESTSELLER" src="./static/img/bestseller.png">
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h3 class="mt-0">反馈内容</h3>
+      <div class="row mb-10">
+        <div id="back" class="col-lg-4 col-sm-2 col-xs-2 pb-10 mr-10"></div> 
+        <h4 class="col-lg-6 col-sm-6 col-xs-6 mr-10" id="classifyItemTitle"></h4>
+        <!-- <select class="form-control col-sm-2 col-xs-6 drowmenu mr-10"  id="classifyItem">
+            <option value="0">请选择</option>
+        </select> -->
+        <!-- <button class="col-sm-2 col-xs-2 btn btn-info mr-10" id="nextchild">下级</button> -->
+        <!-- <button class="col-sm-2 col-xs-2 btn btn-info mr-10" id="queryItem">查询</button> -->
+        <span class="add col-lg-2 col-sm-2 col-xs-2 pull-right" id="typeAdd">+</span>
+      </div>
+      <div class="mb-10 query_time">
+        <span>日期:</span>
+        <input size="14" type="text" id="datetimeStart" readonly class="form_datetime">
+        --
+        <input size="14" type="text" id="datetimeEnd" readonly class="form_datetime">
+        <button class="btn btn-primary query" type="submit" id="queryItem">查询</button>
+        <!-- <button class="btn btn-danger query" type="submit" id="deleteItem">删除</button> -->
+      </div>
+      <!-- <hr> -->
+      <!-- <div id="typeTable">
+          <ul></ul>
+      </div> -->
+      <div id="typeTable">
+          <ul></ul>
+      </div>
+      <div class="mb-10 h20 feedbackfooter">
+        <div class="col-sm-4 col-xs-4">
+          <span>每页</span>
+          <span>
+            <select class="showitem">
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </span>
+          <span>条</span>
+        </div>
+        <span class="col-sm-3 col-xs-3" id="prevpage">上一页</span>
+        <span class="col-sm-3 col-xs-3" id="nextpage">下一页</span>
+        <!-- <span class="col-sm-2 col-xs-2 text-right" id="goback">返回</span> -->
+        <!-- <span class="col-sm-2 col-xs-2 text-right" id="exportForm" onclick="methodExport('typeTable')">导出</span> -->
+        <span class="col-sm-2 col-xs-2 text-right" id="exportForm" onclick="methodExport('typeTable')"><a href="#" id="excelOut"
+            download="反馈报表.xls">导出</a></span>
+      </div>
+    </div>
+
+    <!-- loading -->
+    <div class="masker-wp">
+        <div class="masker"></div>
+        <div class="loading">
+            努力加载中……
+        </div>
+    </div>
+    <!-- loading -->
+    
+    <script src="../bs/js/jquery.min.js"></script>
+    <script src="../bs/js/bootstrap.min.js"></script>
+    <script src="../bs/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../bs/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../bs/js/layer/layer.js"></script>
+    <script src="../bs/js/base64.js"></script>
+    <script src="../bs/js/export.js"></script>
+    <script src="../bs/js/helper.js"></script>
+    <script src="../dist/js/feedbackitem.js"></script>
+    <script src="../dist/js/touch.js"></script>
+  </body>
+</html>

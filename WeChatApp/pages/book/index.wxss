@@ -1,0 +1,6 @@
+/* pages/book/index.wxss */
+swiper-item {
+  background-color: yellowgreen;
+  text-align: center;
+  line-height: 150px;
+}

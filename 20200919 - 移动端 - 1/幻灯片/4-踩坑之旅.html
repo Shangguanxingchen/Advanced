@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html {
+            font-size: 10vw;
+        }
+        body {
+            margin: 0;
+        }
+        #page {
+            /* position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100%;
+            overflow: hidden; */
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #wrap {
+            position: relative;
+            width: 100vw;
+            overflow: hidden;
+        }
+        #list {
+            float: left;
+            display: flex;
+            display: -webkit-box;
+        }
+        #list li {
+            flex: none;
+            width: 100vw;
+        }
+        #list img {
+            width: 100%;
+            display: block;
+        }
+        .nav {
+            position: absolute;
+            left: 0;
+            bottom: .2rem;
+            width: 100%;
+            text-align: center;
+            vertical-align: top;
+        }
+        .nav a {
+            display: inline-block;
+            width: .3rem;
+            height: .3rem;
+            background: #fff;
+            margin: 0 .1rem;
+            border-radius: .15rem;
+            transition: .3s;
+        }
+        .nav .active {
+            width: .6rem;  
+            color: #fff;  
+        }
+        .textList {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .textList li {
+            font: 14px/40px "宋体";
+            padding-left: 20px;
+            border-bottom: 1px solid #000;
+        }
+    </style>
+</head>
+<body>  
+<div id="page">  
+   <div>      
+        <div id="wrap">
+            <ul id="list">
+                <li><img src="img/banner01.png" /></li>
+                <li><img src="img/banner02.png" /></li>
+                <li><img src="img/banner03.png" /></li>
+                <li><img src="img/banner04.png" /></li>
+            </ul>
+            <nav class="nav">
+                <a class="active"></a><a></a><a></a><a></a>
+            </nav>
+        </div>  
+        <ul class="textList">
+
+        </ul>
+    </div>
+</div>
+<script>
+//填充列表内容
+{
+    let list = document.querySelector(".textList");
+    list.innerHTML = [...(".".repeat(100))].map((item,index)=>`<li>这是第${index}个li</li>`).join("");
+}    
+//幻灯片
+{
+  let wrap = document.querySelector("#wrap");
+  let list = document.querySelector("#list");
+  let navs = document.querySelectorAll(".nav a");
+  let translateX = 0;
+  let startPonit = {};
+  let startTranslateX = 0;
+  let now = 0;// 用来计算当前应该显示第几张
+  let threshold = .4; // 切换节点，当拖拽距离小于图片宽度*threshold 则停留点前中，否则切换上一张或下一张
+  let imgW = wrap.clientWidth; 
+  let isMove = true;//判断用户的滑动方向,假设可以滑动，并阻止滚动条滚动 
+  let isDir = false; //判断是否判定到方向
+  list.innerHTML += list.innerHTML;
+  wrap.addEventListener("touchstart",(e)=>{
+      let touch = e.changedTouches[0];
+      startPonit = {
+        x: touch.pageX,
+        y: touch.pageY
+      };
+      /*
+        当前如果是第0张，则切换至第二组第0张
+        当前如果是最后一张，则当前第一组最后一张
+      */
+      list.style.transition = "none";
+      isMove = true;
+      isDir = false;
+      if(now === 0){
+        now = navs.length;
+        translateX = -now*imgW;
+        list.style.transform  = "translateX(" + translateX + "px)";
+      } else if(now === navs.length*2 - 1){
+        now = navs.length - 1;
+        translateX = -now*imgW;
+        list.style.transform  = "translateX(" + translateX + "px)";
+      }
+      startTranslateX = translateX;
+  });
+  /*
+    10,100
+    10,120
+  */
+  wrap.addEventListener("touchmove",(e)=>{
+      let touch = e.changedTouches[0];
+      let nowPonit = {
+        x: touch.pageX,
+        y: touch.pageY
+      };
+      let dis = {
+        x: nowPonit.x - startPonit.x,
+        y: nowPonit.y - startPonit.y
+      };
+      /*
+        在部分安卓机下，手指大面积触碰,会造成同时触发 touchstart 和 touchmove
+
+        判断方向只会在摁下开始滑动时之后去做判断，一旦判定了方向之后，不会重新去判断方向
+      */
+      if(!isDir){
+        if(Math.abs(dis.x) - Math.abs(dis.y) > 5){ // 横向滚动
+          isMove = true;
+          isDir = true;
+        } else if(Math.abs(dis.y) - Math.abs(dis.x) > 5) { //纵向滚动
+          isMove = false;
+          isDir = true;
+        }
+        e.preventDefault();
+      }
+      if(isMove&&isDir){ //判断到方向以及当前是要进行左右滑动时，才移动
+        translateX = startTranslateX + dis.x;
+        list.style.transform  = "translateX(" + translateX + "px)";
+        e.preventDefault();
+      }
+
+      /*
+        横向滑动时，不要触发滚动条
+        纵向滑动时，不要触发幻灯片移动
+      */
+  });
+  wrap.addEventListener("touchend",(e)=>{
+    let touch = e.changedTouches[0];
+    let nowPonit = {
+      x: touch.pageX,
+      y: touch.pageY
+    };
+    let dis = {
+      x: nowPonit.x - startPonit.x,
+      y: nowPonit.y - startPonit.y
+    };
+    //console.log(dis.x);
+    if(Math.abs(dis.x) >= threshold*imgW){ // 切换上一张下一张
+      now -= dis.x/Math.abs(dis.x);
+    }
+    translateX = -now*imgW;
+    list.style.transition = ".2s";
+    list.style.transform  = "translateX(" + translateX + "px)";
+  });
+}
+</script>
+</body>
+</html>

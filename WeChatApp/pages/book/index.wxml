@@ -1,0 +1,7 @@
+<view>
+  <swiper autoplay indicator-dots circular>
+    <swiper-item>都市</swiper-item>
+    <swiper-item>校园</swiper-item>
+    <swiper-item>武侠</swiper-item>
+  </swiper>
+</view>

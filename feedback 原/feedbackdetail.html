@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <title>选择页</title>
+
+        <link href="../bs/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="./static/css/feedback.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        <img alt="BESTSELLER" src="./static/img/bestseller.png">
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="baseInfo">
+                <div class="mb-10 col-sm-6 col-xs-12">
+                    <span class="w20 dis_b opt">反馈标题：</span>
+                    <span id="feedback_title"></span>
+                </div>
+                <!-- <div class="mb-10 col-sm-6 col-xs-12">
+                    <span class="w20 dis_b opt">反馈店铺代码：</span>
+                    <span id="shop_code"></span>
+                </div> -->
+            </div>
+            <div class="categoryInfo row"></div>
+            <hr class="mb-10">
+            <div class="showimgwp mb-10">
+                <span class="opt">反馈照片：</span>
+                <div class="mb-10" id="showimgs">
+                    <ul>
+                        <!-- <li class="col-sm-3 col-xs-3 active"><img src="img/back.png" bsrc="img/m11.jpg" alt=""></li>
+                        <li class="col-sm-3 col-xs-3"><img src="img/back.png" bsrc="img/m22.jpg" alt=""></li>
+                        <li class="col-sm-3 col-xs-3"><img src="img/back.png" bsrc="img/m22.jpg" alt=""></li>
+                        <li class="col-sm-3 col-xs-3"><img src="img/back.png" bsrc="img/m22.jpg" alt=""></li> -->
+                        <!-- <li class="active"><img src="img/back.png" bsrc="img/m11.jpg" alt=""></li>
+                        <li class=""><img src="img/back.png" bsrc="img/m22.jpg" alt=""></li>
+                        <li class=""><img src="img/back.png" bsrc="img/m22.jpg" alt=""></li>
+                        <li class=""><img src="img/back.png" bsrc="img/m22.jpg" alt=""></li>
+                        <li class=""><img src="img/back.png" bsrc="img/m22.jpg" alt=""></li>
+                        <li class=""><img src="img/back.png" bsrc="img/m22.jpg" alt=""></li> -->
+                    </ul>
+                </div>
+                <div id="dialog_large_image"></div>
+                <div>
+                    <span class="opt">问题描述：</span>
+                    <div id="feedbackText"></div>
+                </div>
+                <hr class="mb-10">
+                <button class="btn btn-primary" type="submit" id="goback">返回</button>
+            </div>
+
+        </div>
+
+      <!-- loading -->
+        <div class="masker-wp">
+            <div class="masker"></div>
+            <div class="loading">
+              努力加载中……
+            </div>
+        </div>
+      <!-- loading -->
+
+        <div class="masker-img">
+            <div class="masker"></div>
+            <div class="show_largeimg"></div>
+        </div>
+
+    <script src="../bs/js/jquery.min.js"></script>
+    <script src="../bs/js/bootstrap.min.js"></script>
+    <script src="../bs/js/layer/layer.js"></script>
+    <script src="../bs/js/base64.js"></script>
+    <script src="../bs/js/helper.js"></script>
+    <script src="../dist/js/feedbackdetail.js"></script>
+    </body>
+</html>

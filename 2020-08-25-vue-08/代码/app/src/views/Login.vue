@@ -1,0 +1,70 @@
+<template>
+    <div id="main">
+        
+       <div id="login" class="panel">
+           <h2>登录</h2>
+           <form action="">
+                <div class="form-item">
+                    <label>
+                        <span class="txt">姓名：</span>
+                        <!-- <input type="text" class="form-input" ref="username"> -->
+                        <input type="text" class="form-input" v-model="submitData.username" >
+                    </label>
+                </div>
+                <div class="form-item">
+                    <label>
+                        <span class="txt">密码：</span>
+                        <!-- <input type="password" class="form-input" ref="password"> -->
+                        <input type="password" class="form-input" v-model="submitData.password" >
+                    </label>
+                </div>
+                <div class="form-item">
+                    <label>
+                        <button class="form-button primary" @click.prevent="doLogin">登录</button>
+                        <button class="form-button">注册</button>
+                    </label>
+                </div>
+                <div class="txt">{{message}}</div>
+           </form>
+       </div>    
+
+    </div>
+</template>
+
+<script>
+
+
+export default {
+    name: 'Login',
+
+    data() {
+        return {
+            submitData: {
+                username: '',
+                password: ''
+            },
+            message: ''
+        }
+    },
+
+    methods: {
+        async doLogin() {
+            try {
+                await this.$store.dispatch('userModule/login', {
+                    name: this.submitData.username,
+                    password: this.submitData.password
+                })
+                
+                this.message = '登陆成功';
+
+                this.$router.push({
+                    name: 'Main'
+                });
+            } catch(e) {
+                // console.log('e', e);
+                this.message = e.response.data;
+            }
+        }
+    }
+}
+</script>

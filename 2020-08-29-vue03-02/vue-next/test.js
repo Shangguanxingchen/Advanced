@@ -1,0 +1,5 @@
+function fn(str) {
+
+}
+
+fn('')

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>树图</title>
+    <style>
+        #main {
+            margin: 20px;
+            width: 700px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <!--建立dom 容器-->
+    <div id="main"></div>
+    <!--引入echarts-->
+    <script src="https://lib.baomitu.com/echarts/4.7.0/echarts.min.js"></script>
+    <script>
+        const myChart = echarts.init(document.getElementById('main'));
+
+        fetch('./tree.json')
+            .then((res) => res.json())
+            .then(data => {
+                const option = {
+                    title: {
+                        text: '树图',
+                        textStyle: {
+                            color: 'maroon'
+                        },
+                    },
+                    tooltip: {},
+                    series: [
+                        {
+                            type: 'tree',
+                            data: [data],
+                            top: '10%',
+                            left: '10%',
+                            bottom: '1%',
+                            right: '20%',
+                            symbolSize: 10,
+                            label: {
+                                position: 'left',
+                                verticalAlign: 'middle',
+                                align: 'right',
+                                fontSize: 9
+                            },
+                            leaves: {
+                                label: {
+                                    position: 'right',
+                                    verticalAlign: 'middle',
+                                    align: 'left'
+                                }
+                            },
+                            expandAndCollapse: true,
+                            animationDuration: 550,
+                            animationDurationUpdate: 750
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            })
+    </script>
+</body>
+
+</html>

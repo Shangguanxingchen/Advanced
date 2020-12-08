@@ -1,0 +1,11 @@
+@import "../../static/css/index.css";
+.border {
+  border: 1px solid #000;
+}
+.title {
+  color: red;
+  composes: border;
+}
+:global(.title) {
+  font-size: 100px;
+}

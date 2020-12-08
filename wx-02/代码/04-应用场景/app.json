@@ -1,0 +1,21 @@
+{
+  "pages":[
+    "pages/05-login/05-login",
+    "pages/07-scanCode/07-scanCode",
+    "pages/06-storage/06-storage",
+    "pages/04-https/04-https",
+    "pages/03-02-pageScroll/03-02-pageScroll",
+    "pages/03-01-feedback/03-01-feedback",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black",
+    "enablePullDownRefresh":true
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

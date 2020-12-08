@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="app">
+        <!-- <button @click="a++">a: {{a}}</button>
+        {{c}}
+        <button @click="val++">val: {{val}}</button>
+        <hr />
+        <button>{{arr}}</button> -->
+        <input type="checkbox" :checked="allChecked">
+        <ul>
+            <li v-for="item of arr">
+                <input type="checkbox" v-model="item.checked">
+                {{item.title}}
+            </li>
+        </ul>
+    </div>
+
+
+    <script src="./dist/vue.js"></script>
+
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                a: 1,
+                b: 2,
+                val: 1,
+                arr: [
+                    {id: 1, title: 'aaa', checked: false},
+                    {id: 2, title: 'bbb', checked: false},
+                    {id: 3, title: 'ccc', checked: false},
+                    {id: 4, title: 'ddd', checked: false},
+                    {id: 5, title: 'eee', checked: false}
+                ]
+            },
+            // lazy
+            computed: {
+                // c: {
+                //     get() {
+                //         return this.a + this.b;
+                //     }
+                // },
+                allChecked: {
+                    get() {
+                        console.log('123');
+                        return this.arr.every(item => item.checked);
+                    },
+                    set(newValue) {
+                        console.log('set')
+                        this.arr = this.arr.map(item => ({
+                            ...item,
+                            checked: newValue
+                        }))
+                    }
+                }
+            },
+        })
+    </script>
+</body>
+</html>

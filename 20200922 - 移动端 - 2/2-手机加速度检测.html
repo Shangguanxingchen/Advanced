@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #div {
+      font: 20px/40px "宋体";
+    }
+  </style>
+</head>
+<body>
+<div id="div"></div>  
+<script>
+{
+  /*
+    devicemotion 手机加速度检测
+    event.acceleration 手机加速对象
+  */
+  /*
+    IOS 下要使用 devicemotion 相关API，必须是在 https 协议下。
+  */
+  let div = document.querySelector("#div");
+  window.addEventListener("devicemotion",(e)=>{
+    let motion = e.acceleration;
+    let {x,y,z} = motion;
+    div.innerHTML = `
+      x:${x.toFixed(0)}<br/>
+      y:${y.toFixed(0)}<br/>
+      z:${z.toFixed(0)}
+    `;
+  })
+} 
+</script>  
+</body>
+</html>

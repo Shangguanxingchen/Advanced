@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 编程范式 ； 1.面向过程 2. 面向对象  3.函数式编程FB；
+    // js多范式语言；js 函数 一等公民；
+
+    // 函数式编程：以函数作为主导的软件开发风格；
+
+    // 纯函数：纯函数是对给定的输入返还相同输出的函数；（结果可推测性---》复用性）；
+
+    // let b = 10;
+    // // 不是纯函数 ；
+    // function total(a){
+    //     return a * b;
+    // }
+    // console.log( total(2) );
+
+
+    // 一.纯函数； 基于纯函数；好处：1.复用性 2.可推测（便于测试）;3.组合更复杂函数的可能；4.无副作用；
+    // function total(a){
+    //     let b = 10;
+    //     return a * b;
+    // }
+    // console.log( total(2) );
+    // 不可变数据；
+    // let obj = {
+    //     myname:"张三"
+    // }
+    // // Object.freeze(obj);
+    // obj.myname = "李四";
+    // console.log(obj);
+
+
+    //二、 是声明式编程（抽象：复用性）； 不是命令式编程；
+
+    // 命令式编程:注重过程  “如何”做；
+    // let arr = ["张三","李四","王五"];
+    // for(let i=0;i<arr.length;i++){
+    //     console.log(arr[i],i);
+    // }
+    // console.log(i);
+
+    // 声明式编程：过程抽象  做“什么”，注重结果；
+    let arr = ["张三", "李四", "王五"];
+    arr.forEach((item,i)=>{
+        console.log(item,i);
+    })
+    // // 封装循环过程，只返还结果 ，抽象；
+    // const forEach = function (arr, fn) {
+    //     for (let i = 0;i<arr.length; i++) {
+    //         fn(arr[i],i);
+    //     }
+    // }
+    // // 抽象过程  声明式编程； forEach  、some 、every、reduce
+    // forEach(arr,(item,i)=>{
+    //     console.log(item,i);
+    // });
+
+
+    // 三、高阶函数（把函数当成数据）:以函数作为输入或者输出的函数被称为高阶函数(Higher-Order Function)。
+
+    // 以函数作为输入 ；
+    // function test(cb){
+    //     cb && cb();
+    // }
+    // test(function(){
+    //     console.log(111);
+    // })
+    // 以函数作为输出；
+    // function test(cb){
+    //     //cb && cb();
+    //     return function(str){
+    //         console.log(str);
+    //     }
+    // }
+    // let myfn = test(function(){
+    //     console.log(111);
+    // })
+    //console.log(myfn)
+    // myfn("返还的函数!");
+    // test("456")("123");
+
+    // 高阶函数：1.缓存； 2.延迟执行；
+    // 只想让某个函数执行一次；
+    // function fn(){
+    //     console.log("这个函数只执行一次");
+    // }
+
+    // 高阶函数
+    // const once  = function(fn){
+    //     let done = false;
+    //     return function(){
+    //         if(!done){
+    //             fn();
+    //             done = true;
+    //         }else{
+    //             console.log("函数已经被执行了!!");
+    //         }
+    //     }
+    // }
+
+    // let myfn = once(fn);
+    // myfn();
+    // myfn();
+    // myfn();
+    // myfn();
+
+    // 1.柯里化（curry）:把一个多元参数的函数转换成一元参数的函数；
+    // function fn(a,b){
+    //     return a+b;
+    // }
+    // // console.log( fn(10,5));
+
+    // const curry = function(fn){
+    //     return function(a){
+    //        return function(b){
+    //            return fn(a,b);
+    //        }
+    //     }
+    // }
+
+    // // 柯里化过程
+    // let myfn = curry(fn);
+    // // 一元传参数；
+    // console.log( myfn(10)(5) );
+    // fn(10)(5);
+    // 多元参数--->一元参数；
+    // function fn(a,b,c,d){
+    //     return a + b + c  + d;
+    // }
+
+    // // // curry ??;
+    // const curry = function(fn){
+    //     return function curryFn(...args){
+    //         if(args.length<fn.length){
+    //             return function(...args2){
+    //                 // ([1,2])
+    //                 return curryFn(...args.concat(args2))
+    //             }
+    //         }else{
+    //             // 执行
+    //           return  fn(...args);
+    //         }
+    //     }
+    // }
+    // let myfn = curry(fn);
+    // console.log( myfn(10)(5)(2)(1));
+    // fn(10)(5)(2);
+    // let arr1 = [1,2];
+    // let arr2 = [3,4];
+    // console.log(arr1.concat(arr2));
+
+
+    // function test(){
+    //     // console.log(args);
+    //     // console.log(arguments)
+    // }
+    // test(10,20);
+
+    // 组合（composition）和管道（pipe）；
+    // 组合：函数执行顺序是从右至左执行   ；  管道：函数执行顺序是从左至右执行； “|”
+
+    // function afn(a) {
+    //     return a * 4;
+    // }
+
+    // function bfn(b) {
+    //     return b + 3;
+    // }
+
+    // function cfn(c) {
+    //     return c + 4;
+    // }
+
+// //2个函数组合函数 
+// 把单一功能函数组合成多功能函数
+// const compose = function(bfn,afn){
+//     return function(val){
+//         return bfn(afn(val));
+//     }
+// }
+
+// const  myfn =  compose(bfn,afn);
+// console.log( myfn(2) );
+// const pipe = function(...fns){
+//     return function (val){
+//         return fns.reduce((preTotal,fn)=>{
+//             return fn(preTotal);
+//         },val);
+//     }
+// }
+// //pipe: 函数执行顺序是从左至右执行
+// // const myfn = pipe(afn,bfn,cfn);
+// // console.log( myfn(2) );
+// const compose = function(...fns){
+//     return function (val){
+//         return fns.reverse().reduce((preTotal,fn)=>{
+//             return fn(preTotal);
+//         },val);
+//     }
+// }
+// // compose:从右至左执行
+// const myfn = compose(afn,bfn,cfn);
+// console.log( myfn(2) );
+
+
+// 需求；
+
+// let str = "我是中国人。我爱中国。我们同住地球村。好了，写完了。";
+// // 1.查找句号 2.统计句号长度  3.判断句号的奇偶；
+// // 封装纯函数；
+// // 1.查找句号;
+// const getPeriod = str=>str.match(/。/g);
+// // 2.统计句号长度 
+// const getLength = str=>str.length;
+// // 3.判断句号的奇偶；
+// const oddOrEven = num=>num%2===0?'偶数':'奇数';
+// // console.log( oddOrEven(1));
+// const myfn = compose(oddOrEven,getLength,getPeriod);
+// console.log(myfn(str))
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</html>

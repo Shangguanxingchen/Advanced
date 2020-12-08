@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="js/react.js"></script>
+  <script src="js/react-dom.js"></script>
+</head>
+<body>
+  <div id="root">
+  </div>
+  <script>
+      let h1 = React.createElement('h1',{id:"title"},"Hello React");
+      let p = React.createElement("p",null,"学习 React 的第一天");
+      let header = React.createElement("header",null,[h1,p]);
+      let ul = React.createElement("ul",null,[
+          React.createElement("li",null,"列表项1"),
+          React.createElement("li",null,"列表项2")
+      ])
+      let section = React.createElement("section",{
+          className: "wrap"
+      },header,ul);
+      //将视图添加到DOM中
+      ReactDOM.render(
+        section,
+        document.querySelector('#root')
+      );
+  </script>
+</body>
+</html>

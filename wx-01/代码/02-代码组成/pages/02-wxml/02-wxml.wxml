@@ -1,0 +1,38 @@
+<!--pages/02-wxml/02-wxml.wxml-->
+<text>pages/02-wxml/02-wxml.wxml</text>
+<view class="text">
+  <!-- <text>
+    {{motto}}
+    {{1+1+'只老虎'}}
+    {{name==='呷哺'?'火锅':'自己做饭'}}
+  </text> -->
+  <!-- <text wx:if="{{name==='呷哺'}}">火锅</text> -->
+  <!-- <block wx:if="{{name==='呷哺'}}">
+    <text>火锅</text>
+    <text>面条</text>
+  </block>
+  <text wx:elif="{{name==='肯德基'}}">汉堡</text>
+  <text wx:else>回家做饭</text> -->
+</view>
+
+<!-- <view wx:for="{{food}}" wx:key="id" wx:for-item="ele">
+  <text>{{ele.name}}</text>
+</view> -->
+<!-- <view wx:for="{{food}}" wx:key="*this" wx:for-item="ele">
+  <text>{{ele.name}}</text>
+</view> -->
+<!-- <view wx:for="{{food}}" wx:key="i" wx:for-item="ele" wx:for-index="i">
+  <text>{{i}}：{{ele.name}}</text>
+</view> -->
+
+<template name="hotel">
+  <text>{{name}}：</text>
+  <text wx:for="{{food}}" wx:key="id">{{index?'、':''}}{{item.name}}</text>
+</template>
+
+<template is="hotel" data="{{name:'永和',food}}"></template>
+
+
+
+
+

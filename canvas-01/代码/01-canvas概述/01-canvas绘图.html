@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas绘图</title>
+    <style>
+        #canvas{
+            background-color: antiquewhite;
+            /*width: 1000%;*/
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="700" height="800">
+        不兼容
+    </canvas>
+    <script>
+        //获取画布
+        const  canvas=document.querySelector('#canvas');
+        /*canvas.width=300;
+        canvas.height=150;*/
+        //画笔
+        const ctx=canvas.getContext('2d');
+        // const ctx=canvas.getContext('webgl');
+        //红色矩形
+        ctx.fillStyle='red';
+        ctx.fillRect(20,20,400,200);
+
+    </script>
+</body>
+</html>

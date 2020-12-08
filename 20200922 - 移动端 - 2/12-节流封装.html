@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box {
+      width: 300px;
+      height: 300px;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+<!--
+    函数防抖[debounce]
+      - 希望函数只执行一次，哪怕我进行了多次调用    
+    函数节流[throttle]
+      让函数保持在一个可接受的固定频率执行
+-->
+<div id="box"></div>
+<script>
+function throttle(fn,interval = 200,isStart = false) {
+  let timer = 0;
+  return function (...args) {
+    if(timer){
+      return;
+    }
+    if(isStart){
+      fn.apply(this,args);
+    }
+    timer = setTimeout(() => {
+      if(!isStart){
+        fn.apply(this,args);
+      }
+      timer = 0;
+    }, interval);
+  }
+}  
+{
+  let box = document.querySelector("#box");
+  box.onmousemove = throttle(function(e) {
+      // console.log(e,this);
+  },1000,true);
+  
+}
+</script>
+</body>
+</html>

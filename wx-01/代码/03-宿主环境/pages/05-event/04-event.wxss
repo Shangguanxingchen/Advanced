@@ -1,0 +1,6 @@
+/* pages/05-event/04-event.wxss */
+.list{
+  width: 186rpx;
+  height: 1000rpx;
+  background-color: antiquewhite;
+}

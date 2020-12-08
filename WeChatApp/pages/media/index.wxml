@@ -1,0 +1,5 @@
+<!--pages/media/index.wxml-->
+<text>pages/media/index.wxml</text>
+<view>
+  <video src="https://haokan.baidu.com/v?vid=10826886284033211610&tab=recommend" controls autoplay loop class="myvideo"></video>
+</view>

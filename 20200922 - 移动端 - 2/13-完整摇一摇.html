@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #mask {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, .7);
+      display: flex;
+      z-index: 100;
+    }
+    #mask span {
+      margin: auto;
+      font-size: 40px;
+      color: #fff;
+    }
+    #div {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      margin: -25px 0 0 -25px;
+      width: 50px;
+      height: 50px;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+<div id="mask"><span>点击进入应用</span></div>
+<script src="motion.js"></script>  
+<script>
+function throttle(fn,interval = 200,isStart = false) {
+  let timer = 0;
+  return function (...args) {
+    if(timer){
+      return;
+    }
+    if(isStart){
+      fn.apply(this,args);
+    }
+    timer = setTimeout(() => {
+      if(!isStart){
+        fn.apply(this,args);
+      }
+      timer = 0;
+    }, interval);
+  }
+}     
+function shake(cb) {
+  const RANGE = 50; //超过该幅度认定用户进行了摇一摇
+  const MINRANGE = 10; //当用户的晃动停止时，执行摇一摇
+  let lastX = 0,
+  lastY = 0,
+  lastZ = 0;
+  let isShake = false;
+  setMotion(throttle((e)=>{
+    let {x,y,z} = e.acceleration;
+    let nowRange = Math.abs(x - lastX) + Math.abs(y - lastY) + Math.abs(z - lastZ);
+    if(nowRange > RANGE){
+      isShake = true;//用户触发了摇一摇
+    } else if(nowRange < MINRANGE&isShake){
+      cb();
+      isShake = false;
+    }
+    lastX = x;
+    lastY = y;
+    lastZ = z;
+  }),200,true);
+}
+
+
+{
+  
+  let mask = document.querySelector("#mask");
+  /*
+    摇一摇监听当前次和上一次的加速有了一个比较大差值
+
+  */
+  document.addEventListener("touchstart",()=>{
+    mask.style.display = "none";
+    shake(()=>{
+      alert("您进行了摇一摇");
+    })
+  },{once:true})
+} 
+</script>  
+</body>
+</html>

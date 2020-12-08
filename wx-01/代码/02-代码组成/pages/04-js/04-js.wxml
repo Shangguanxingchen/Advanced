@@ -1,0 +1,6 @@
+<!--pages/04-js/04-js.wxml-->
+<text>pages/04-js/04-js.wxml</text>
+<view>
+  {{motto}}
+</view>
+<canvas type="2d" id="myCanvas"></canvas>

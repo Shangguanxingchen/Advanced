@@ -487,3 +487,11 @@ img {
     width: 26px;
     text-align: center;
 }
+#select-box {
+    box-sizing: border-box;
+    position: fixed;
+    width: 0;
+    height: 0;
+    border: 1px solid #41c1fc;
+    background: rgba(4, 174, 242, .2);
+}

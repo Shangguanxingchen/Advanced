@@ -82,6 +82,77 @@
         console.log(data);
     }
 
+    /**
+     * moveData(id,newPid) 根据 id和newPid 修改数据的位置
+     * 参数：
+     *  ID 数据的id
+     *  Pid 数据的新的父级ID
+    */
+    function moveData(id, newPid) {
+        let selfData = getSelf(id);
+        selfData.pid = newPid;
+    }
+    /**
+     * testName(id,newName) 检查id下的子元素名字是否和newName冲突
+     * 参数：
+     *  ID 数据的id
+     *  newName 新名字
+     * 返回值：
+     *  true 有冲突， false 没有冲突
+    */
+   function testName(id, newName) {
+       let child = getChild(id);
+       return child.some(item=>item.title == newName)
+   }
+    /**
+     * changeChecked(id,checked) 元素选中或不选中
+     * 参数：
+     *  ID 数据的id
+     *  checked 选中状态
+     */
+    function changeChecked(id, checked) {
+        let selfData = getSelf(id);
+        selfData.checked = checked;
+    }
+    /**
+     * isCheckedAll() 判断当前视图中的数据是否全选
+     * 返回值：
+     *  true 全选  false没全选
+     */
+    function isCheckedAll() {
+        let child = getChild(nowId);
+        return child.every(item=>item.checked)&&child.length>0;
+    }
+    /**
+     * setAllChecked() 判断当前视图中的数据是否全选
+     * 参数
+     *  checked 是否选中
+     */
+    function setAllChecked(checked) {
+        let child = getChild(nowId);
+        return child.forEach(item=>item.checked = checked);
+    }
+
+    /**
+     * getChecked() 获取被选中的所有文件
+     * 返回值
+     *  返回当前视图被选中的所有数据
+     */
+    function getChecked(checked) {
+        let child = getChild(nowId);
+        return child.filter(item=>item.checked);
+    }
+
+    // 操作是否全选
+    let checkedAll = document.querySelector("#checked-all");
+    function setCheckedAll() {
+        checkedAll.checked = isCheckedAll();
+    }
+    checkedAll.onchange = function() {
+        setAllChecked(this.checked);
+        folders.innerHTML = renderFolders();
+    }
+
     /* 视图渲染 */
     let treeMenu = document.querySelector("#tree-menu");
     let breadNav = document.querySelector(".bread-nav");
@@ -93,9 +164,9 @@
         breadNav.innerHTML = renderBreadNav();
         folders.innerHTML = renderFolders();
     }
+
     /* 树状菜单的渲染 */
-    
-    function renderTreeMenu(pid,level){
+    function renderTreeMenu(pid,level,isOpen){
         let child = getChild(pid);
         let nowAllParent = getAllParent(nowId);
         nowAllParent.push(getSelf(nowId));
@@ -104,7 +175,7 @@
                 ${child.map(item=>{
                     let itemChild = getChild(item.id);
                     return `
-                        <li class="${nowAllParent.includes(item)?"open":""}">
+                        <li class="${(nowAllParent.includes(item) || isOpen)?"open":""}">
                             <p 
                                 style="padding-left:${40+level*20}px" 
                                 class="${itemChild.length?"has-child":""} ${item.id == nowId?"active":""}"
@@ -112,7 +183,7 @@
                             >
                                 <span>${item.title}</span>
                             </p>
-                            ${itemChild.length?renderTreeMenu(item.id,level+1):""}
+                            ${itemChild.length?renderTreeMenu(item.id,level+1,isOpen):""}
                         </li>
                     `
                 }).join("")}
@@ -139,12 +210,12 @@
         let inner = "";
         child.forEach(item=>{
             inner += `
-                <li class="folder-item" data-id="${item.id}">
+                <li class="folder-item ${item.checked?"active":""}" data-id="${item.id}">
                     <img src="img/folder-b.png" alt="">
                     <span class="folder-name">${item.title}</span>
                     <input type="text" class="editor" value="${item.title}">
                     <label class="checked">
-                        <input type="checkbox" />
+                        <input type="checkbox" ${item.checked?"checked":""}/>
                         <span class="iconfont icon-checkbox-checked"></span>
                     </label>   
                 </li>
@@ -152,6 +223,7 @@
         });
         return inner;
     }
+
     /* 弹窗 */
     // 成功弹窗
     function alertSuccess(info){
@@ -174,7 +246,10 @@
         },1000);
     }
 
-
+    // 阻止页面被选中
+    document.addEventListener("selectstart", function(e) {
+        e.preventDefault();
+    })
 
     /* 三大视图的事件添加 */
 
@@ -183,6 +258,9 @@
         let item = e.target.tagName == "SPAN"?e.target.parentNode:e.target;
         if(item.tagName == "P"){
             nowId = item.dataset.id;
+            data.forEach(item=>{
+                delete item.checked;
+            })
             render();
         }
     });
@@ -202,6 +280,8 @@
             item = e.target;
         } else if(e.target.tagName == "IMG"){
             item = e.target.parentNode;
+        } else if (e.target.className == "folder-name"){
+            rename(e.target.parentNode);
         }
         if(item){
             nowId = item.dataset.id;
@@ -209,9 +289,30 @@
         }
     });
 
+    // 双击名字重命名
+    folders.addEventListener("dblclick", function (e) {
+        if (e.target.className == "folder-name") {
+            rename(e.target.parentNode);
+        }
+    });
+    // 文件夹选中
+    folders.addEventListener("change",function(e){
+        if(e.target.type === "checkbox") {
+            // if(e.target){
+            //     e.target.parentNode.parentNode.classList.add("active");
+            // }else {
+            //     e.target.parentNode.parentNode.classList.remove("active");
+            // }
+            let id = e.target.parentNode.parentNode.dataset.id;
+            changeChecked(id,e.target.checked);
+            folders.innerHTML = renderFolders();
+            setCheckedAll();
+        }
+    });
+
     /** 新建文件夹 **/
     let createBtn = document.querySelector(".create-btn");
-    createBtn.addEventListener("click",function(){
+    createBtn.onclick = function(){
         data.push({
             id: Date.now(),
             pid: nowId,
@@ -219,7 +320,39 @@
         });
         render();
         alertSuccess("添加文件夹成功");
-    });
+        setCheckedAll();
+    };
+
+    // 重命名
+    function rename(folder){
+        let folderName = folder.querySelector(".folder-name");
+        let editor = folder.querySelector(".editor");
+        folderName.style.display = "none";
+        editor.style.display = "block";
+        editor.select();
+        editor.onblur = function() {
+            if(editor.value === folderName.innerHTML) {
+                folderName.style.display = "block";
+                editor.style.display = "none";
+                return;
+            }
+            if(!editor.value.trim()) {
+                alertWarning("请输入新名字");
+                editor.forcus();
+                return ;
+            }
+            if(testName(nowId,editor.value)) {
+                alertWarning("名字重复了.");
+                editor.forcus();
+                return;
+            }
+            folderName.style.display = "block";
+            editor.style.display = "none";
+            getSelf(folder.dataset.id).title = editor.value;
+            render();
+            alertSuccess("重命名成功");
+        }
+    }
 
     // 获取新建文件夹的名字
     function getName(){
@@ -255,8 +388,8 @@
         }
         return `新建文件夹(${names.length + 1})`;
     }
-    // 右键菜单
 
+    // 右键菜单
     let contextmenu = document.querySelector("#contextmenu");
     window.addEventListener("mousedown",function(e){
         contextmenu.style.display = "none";
@@ -268,7 +401,7 @@
         contextmenu.style.display = "none";
     })
     document.addEventListener("contextmenu",function(e){
-        e.preventDefault();
+        // e.preventDefault();
     });
     folders.addEventListener("contextmenu",function(e){
         let folder = null;
@@ -300,15 +433,246 @@
         // 删除单项
         if(e.target.classList.contains("icon-lajitong")){
             //console.log("删除",this.folder);
-            removeData(Number(this.folder.dataset.id));
-            render();
+            confirm("确定删除吗？",()=>{
+                removeData(Number(this.folder.dataset.id));
+                render();
+                alertSuccess("删除文件夹成功");
+            })
         // 移动单项    
         } else if(e.target.classList.contains("icon-yidong")){
             console.log("移动");
+            let id = Number(this.folder.dataset.id);
+            let nowPid = getSelf(id).pid;
+            moveAlert(()=>{
+                if (newPid === null ||  newPid == nowPid) {
+                    alertWarning("并没有移动位置");
+                    return false;
+                }
+                let allChild = getAllChild(id);
+                let newParent = getSelf(newPid);
+                allChild.push(getSelf(id));
+                if (allChild.includes(newParent)) {
+                    alertWarning("不能如此移动");
+                    return false;
+                }
+                if(testName(newPid, getSelf(id).title)){
+                    alertWarning("文件夹命名有冲突");
+                    return false;
+                }
+                moveData(id, newPid);
+                nowId = newPid;
+                render();
+                alertSuccess("移动文件夹成功");
+                return true;
+            })
         // 重命名单选    
         } else if(e.target.classList.contains("icon-zhongmingming")){
             console.log("重命名");
+            rename(this.folder);
         }
         contextmenu.style.display = "none";
     });
+
+    //弹窗控件
+    let confirmEl = document.querySelector(".confirm");
+    let confirmText = document.querySelector(".confirm-text");
+    let closConfirm = document.querySelector(".clos");
+    let mask = document.querySelector("#mask");
+    let confirmBtns = confirmEl.querySelectorAll(".confirm-btns a");
+    function confirm(info,resolve,reject) {
+        confirmText.innerHTML = info;
+        confirmEl.classList.add("confirm-show");
+        mask.style.display = "block";
+        confirmBtns[0].onclick = function() {
+            resolve && resolve();
+            confirmEl.classList.remove("confirm-show");
+            mask.style.display = "none";
+        };
+        confirmBtns[1].onclick = function() {
+            reject && reject();
+            confirmEl.classList.remove("confirm-show");
+            mask.style.display = "none";
+        }
+    }
+    closConfirm.addEventListener("click",()=>{
+        confirmEl.classList.remove("confirm-show");
+        mask.style.display = "none";
+    })
+
+    //移动到弹窗
+    let moveAlertEl = document.querySelector(".move-alert");
+    let closMoveAlert = moveAlertEl.querySelector(".clos");
+    let moveAlertBtns = moveAlertEl.querySelectorAll(".confirm-btns a");
+    let moveAlertTreeMenu = moveAlertEl.querySelector(".move-alert-menu");
+    let newPid = null;
+    moveAlertTreeMenu.addEventListener("click", (e)=>{
+        let item = e.target.tagName == "SPAN" ? e.target.parentNode : e.target;
+        if (item.tagName == "P") {
+            let p = moveAlertTreeMenu.querySelectorAll("p");
+            p.forEach(item=>{
+                item.classList.remove("active");
+            })
+            item.classList.add("active");
+            newPid = item.dataset.id;
+        }
+    });
+    function moveAlert(resolve,reject) {
+        moveAlertTreeMenu.innerHTML = renderTreeMenu(topPid, 0, true);
+        moveAlertEl.classList.add("move-alert-show");
+        mask.style.display = "block";
+        moveAlertBtns[0].onclick = function () {
+            if(resolve) {
+                if (resolve()) {
+                    moveAlertEl.classList.remove("move-alert-show");
+                    mask.style.display = "none";
+                }
+            }else {
+                moveAlertEl.classList.remove("move-alert-show");
+                mask.style.display = "none";
+            }
+            // resolve && resolve();
+            // moveAlertEl.classList.remove("move-alert-show");
+            // mask.style.display = "none";
+        };
+        moveAlertBtns[1].onclick = function () {
+            reject && reject();
+            moveAlertEl.classList.remove("move-alert-show");
+            mask.style.display = "none";
+        };
+    }
+    closMoveAlert.addEventListener("click", () => {
+        moveAlertEl.classList.remove("move-alert-show");
+        mask.style.display = "none";
+    });
+
+    // 框选
+    let selectBox = null;
+    folders.addEventListener("mousedown", function(e) {
+        let item = folders.querySelectorAll(".folder-item");
+        if(e.button !== 0) {
+            return;
+        }
+        let startMouse = {
+            x: e.clientX,
+            y: e.clientY
+        }
+        let rect = folders.getBoundingClientRect();
+        let move = (e) => {
+            if (!selectBox) {
+                selectBox = document.createElement("div");
+                selectBox.id = "select-box";
+                document.body.appendChild(selectBox);
+            }
+            let nowMouse = {
+                x: e.clientX,
+                y: e.clientY
+            };
+            let dis = {
+                x: nowMouse.x - startMouse.x,
+                y: nowMouse.y - startMouse.y
+            };
+            let minX = Math.min(nowMouse.x, startMouse.x);
+            let minY = Math.min(nowMouse.y, startMouse.y);
+            let maxX = Math.max(nowMouse.x, startMouse.x);
+            let maxY = Math.max(nowMouse.y, startMouse.y);
+            let l = Math.max(minX, rect.left);
+            let t = Math.max(minY, rect.top);
+            let r = Math.min(maxX, rect.right);
+            let b = Math.min(maxY, rect.bottom);
+            // let w = Math.abs(nowMouse.x - startMouse.x);
+            // let h = Math.abs(nowMouse.y - startMouse.y);
+            selectBox.style.left = l+"px";
+            selectBox.style.top = t+"px";
+            selectBox.style.width = (r-l)+"px";
+            selectBox.style.height = (b-t)+"px";
+            item.forEach(i => {
+                let checkbox = i.querySelector("[type=checkbox]");
+                if (isCollision(i, selectBox)){
+                    i.classList.add("active");
+                    checkbox.checked = true;
+                } else {
+                    i.classList.remove("active");
+                    checkbox.checked = false;
+                }
+                changeChecked(i.dataset.id, checkbox.checked);
+            })
+            setCheckedAll();
+        };
+        document.addEventListener("mousemove", move);
+        document.addEventListener("mouseup", (e) => {
+            document.removeEventListener("mousemove", move);
+            if(selectBox) {
+                document.body.removeChild(selectBox);
+                selectBox = null;
+            }
+        },{once:true});
+    });
+
+    // 碰撞检测
+    function isCollision(el, el2) {
+        var elRect = el.getBoundingClientRect();
+        var el2Rect = el2.getBoundingClientRect();
+        if (elRect.top > el2Rect.bottom
+            || el2Rect.top > elRect.bottom
+            || elRect.left > el2Rect.right
+            || el2Rect.left > elRect.right) {
+            return false;//没有碰撞
+        }
+        return true;//碰撞
+    }
+
+    // 批量删除文件夹
+    var delBtn = document.querySelector(".del-btn");
+    delBtn.onclick = function () {
+        var checkedData = getChecked();
+        if (checkedData.length == 0) {
+            alertWarning("请先选择要操作的文件夹");
+            return;
+        }
+        confirm("确定删除选中的这些文件夹吗", function () {
+            checkedData.forEach(item =>{
+                removeData(item.id);
+            })
+            render();
+            alertSuccess("删除文件夹成功");
+        });
+    }
+
+    // 批量移动文件夹
+    var moveBtn = document.querySelector(".move-btn");
+    moveBtn.onclick = function () {
+        var checkedData = getChecked();
+        if (checkedData.length == 0) {
+            alertWarning("请先选择要操作的文件夹");
+            return;
+        }
+        let nowPid = nowId;
+        moveAlert(() => {
+            if (newPid === null || newPid == nowPid) {
+                alertWarning("并没有移动位置");
+                return false;
+            }
+            for (let i = 0; i < checkedData.length; i++) {
+                let id = checkedData[i].id;
+                let allChild = getAllChild(id);
+                let newParent = getSelf(newPid);
+                allChild.push(checkedData[i]);
+                if (allChild.includes(newParent)) {
+                    alertWarning("不能如此移动");
+                    return false;
+                }
+                if (testName(newPid, checkedData[i].title)) {
+                    alertWarning("文件夹命名有冲突");
+                    return false;
+                }
+                moveData(id, newPid);
+            }
+            nowId = newPid;
+            render();
+            alertSuccess("移动文件夹成功");
+            return true;
+        })
+       
+    };
+
 }

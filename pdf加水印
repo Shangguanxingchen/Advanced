@@ -198,3 +198,29 @@ export default class PreviewPdf {
     }, 500)
   }
 }
+
+
+//用法
+init() {
+    var url = 'http://localhost:8080/static/test.pdf?user=张三'
+    var arr = url.split('?')
+    var user = arr[1].split('=')[1]
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.open('GET', arr[0], true);
+    xhr.send();
+    xhr.onload = function() {
+      var blob = xhr.response;
+      // 对blob进行处理
+      new PreviewPdf({
+        blob,
+        docTitle: 'window.open docTitle',
+        isAddWatermark: true, // 是否需要添加水印
+        watermark: { // watermark必填 里面可以不填
+          type: 'canvas',
+          text: user
+        }
+      })
+    };
+    
+  }
